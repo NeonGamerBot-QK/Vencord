@@ -178,7 +178,7 @@ export default definePlugin({
                 body: raw,
                 redirect: "follow"
             };
-
+            // @ts-ignore
             fetch("https://api.acloudapp.com/v1/chat/completions", requestOptions)
                 .then(response => response.json())
                 .then(result => {
