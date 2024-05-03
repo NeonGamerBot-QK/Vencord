@@ -18,7 +18,7 @@
 
 import "./checkNodeVersion.js";
 
-import { execFileSync, execSync } from "child_process";
+import { execSync } from "child_process";
 import { createWriteStream, existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
 import { dirname, join } from "path";
 import { Readable } from "stream";
@@ -119,7 +119,12 @@ const installerBin = await ensureBinary();
 console.log("Now running Installer...");
 
 try {
-    execFileSync(installerBin, {
+    console.log({
+        ...process.env,
+        VENCORD_USER_DATA_DIR: BASE_DIR,
+        VENCORD_DEV_INSTALL: "1"
+    });
+    execSync(`sudo ${installerBin}`, {
         stdio: "inherit",
         env: {
             ...process.env,
