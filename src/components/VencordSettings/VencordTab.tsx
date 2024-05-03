@@ -309,6 +309,7 @@ function DonateCard({ image }: DonateCardProps) {
         <Card className={cl("card", "donate")}>
             <div>
                 <Forms.FormTitle tag="h5">Support the Project</Forms.FormTitle>
+                <Forms.FormText>Modified fork of vencord w/ zeon stuff :D</Forms.FormText>
                 <Forms.FormText>Please consider supporting the development of Vencord by donating!</Forms.FormText>
                 <DonateButton style={{ transform: "translateX(-1em)" }} />
             </div>
