@@ -28,7 +28,7 @@ const VENCORD_SRC_DIR = join(__dirname, "..");
 
 const execFile = promisify(cpExecFile);
 
-const isFlatpak = process.platform === "linux" && !!process.env.FLATPAK_ID;
+const isFlatpak = true; // guess what, flatpak dosent like forks. old code: process.platform === "linux" && !!process.env.FLATPAK_ID;
 
 if (process.platform === "darwin") process.env.PATH = `/usr/local/bin:${process.env.PATH}`;
 
@@ -40,16 +40,17 @@ function git(...args: string[]) {
 }
 
 async function getRepo() {
-    const res = await git("remote", "get-url", "origin");
-    return res.stdout.trim()
-        .replace(/git@(.+):/, "https://$1/")
-        .replace(/\.git$/, "");
+    // const res = await git("remote", "get-url", "origin");
+    // return res.stdout.trim()
+    //     .replace(/git@(.+):/, "https://$1/")
+    //     .replace(/\.git$/, "");
+    return "https://github.com/NeonGamerBot-QK/Vencord";
 }
 
 async function calculateGitChanges() {
     await git("fetch");
 
-    const branch = (await git("branch", "--show-current")).stdout.trim();
+    const branch = "main" || (await git("branch", "--show-current")).stdout.trim();
 
     const existsOnOrigin = (await git("ls-remote", "origin", branch)).stdout.length > 0;
     if (!existsOnOrigin) return [];
