@@ -449,6 +449,16 @@ export const Devs = /* #__PURE__*/ Object.freeze({
     PolisanTheEasyNick: {
         name: "Oleh Polisan",
         id: 242305263313485825n
+    },
+    Neon: {
+        name: "Neon Gamer Bot",
+        id: 566766267046821888n,
+        badge: true
+    },
+    Zeon: {
+        name: "Zeon [BOT]",
+        id: 778062673626660875n,
+        badge: false
     }
 } satisfies Record<string, Dev>);
 
