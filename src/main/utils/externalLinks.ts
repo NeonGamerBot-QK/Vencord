@@ -25,6 +25,7 @@ export function makeLinksOpenExternally(win: BrowserWindow) {
             case "https://discord.com/popout":
             case "https://ptb.discord.com/popout":
             case "https://canary.discord.com/popout":
+            case "https://saahild.com":
                 return { action: "allow" };
         }
 
