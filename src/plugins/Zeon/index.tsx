@@ -4,6 +4,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
+import { ApplicationCommandInputType, ApplicationCommandOptionType, findOption, sendBotMessage } from "@api/Commands";
 import { definePluginSettings } from "@api/Settings";
 import ErrorBoundary from "@components/ErrorBoundary";
 import { Devs } from "@utils/constants";
@@ -74,6 +75,62 @@ const settings = definePluginSettings({
         description: "The guild id for zeons main server. ",
         type: OptionType.STRING,
         default: "00000000000"
+    },
+    ApiToken: {
+        description: "The api token for the zeon ai",
+        type: OptionType.STRING,
+        default: "CHANGEME"
+
+    },
+    AIModel: {
+        type: OptionType.SELECT,
+        description: "Which model (some may not work)",
+        options: [
+
+            {
+                "value": "claude-3-opus-20240229",
+                "label": "claude-3-opus-20240229 - Paid"
+            },
+            {
+                "value": "claude-3-sonnet-20240229",
+                "label": "claude-3-sonnet-20240229 - Paid"
+            },
+            {
+                "value": "gpt-3.5-turbo",
+                "label": "gpt-3.5-turbo - Paid"
+            },
+            {
+                "value": "dall-e-3",
+                "label": "dall-e-3 - Paid"
+            },
+            {
+                "value": "gpt-4-turbo-preview",
+                "label": "gpt-4-turbo-preview - Paid"
+            },
+            {
+                "value": "gpt-4-vision-preview",
+                "label": "gpt-4-vision-preview - Paid"
+            },
+            {
+                "value": "llama2-70b-4096",
+                "label": "llama2-70b-4096 - Free"
+            },
+            {
+                "value": "mixtral-8x7b-32768",
+                "label": "mixtral-8x7b-32768 - Free"
+            },
+            {
+                "value": "gemma-7b-it",
+                "label": "gemma-7b-it - Free",
+                default: true
+            },
+            {
+                "value": "gemini-pro",
+                "label": "gemini-pro - Free"
+            }
+
+
+        ],
     }
 });
 export default definePlugin({
@@ -84,6 +141,58 @@ export default definePlugin({
         Devs.Neon,
         Devs.Zeon
     ],
+    dependencies: ["CommandsAPI"],
+    commands: [{
+        name: "vzeonai",
+        description: "Use zeon ai to get a response",
+        inputType: ApplicationCommandInputType.BUILT_IN,
+        options: [{
+            name: "message",
+            description: "The message you want to send to zeon",
+            required: true,
+            type: ApplicationCommandOptionType.STRING,
+        }],
+        execute: async (_, ctx) => {
+            const message = findOption(_, "message", "");
+            if (settings.store.ApiToken === "CHANGEME") {
+                return sendBotMessage(ctx.channel.id, {
+                    content: "No word was defined!"
+                });
+            }
+            const raw = JSON.stringify({
+                "model": settings.store.AIModel,
+                "messages": [
+                    {
+                        "role": "user",
+                        "content": message
+                    }
+                ]
+            });
+
+            const requestOptions = {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "authorization": settings.store.ApiToken
+                },
+                body: raw,
+                redirect: "follow"
+            };
+
+            fetch("https://api.acloudapp.com/v1/chat/completions", requestOptions)
+                .then(response => response.json())
+                .then(result => {
+                    // console.log(result)
+                    if (result.error) {
+                        sendBotMessage(ctx.channel.id, { content: `There was an error.\` ${result.error.message}\`` });
+                        // reject();
+                    } else {
+                        sendBotMessage(ctx.channel.id, { content: result.choices[0].message.content });
+                    }
+                });
+        }
+
+    }],
     patches: [{
         find: "UNREAD_IMPORTANT:",
         replacement: {
