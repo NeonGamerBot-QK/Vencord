@@ -25,7 +25,6 @@ import { Flex } from "@components/Flex";
 import { Heart } from "@components/Heart";
 import { openContributorModal } from "@components/PluginSettings/ContributorModal";
 import { Devs } from "@utils/constants";
-import { Margins } from "@utils/margins";
 import { isPluginDev } from "@utils/misc";
 import { closeModal, Modals, openModal } from "@utils/modal";
 import definePlugin from "@utils/types";
@@ -51,13 +50,35 @@ async function loadBadges(noCache = false) {
         init.cache = "no-cache";
 
     DonorBadges = await fetch("https://badges.vencord.dev/badges.json", init)
-        .then(r => r.json());
+        .then(r => r.json()).then(json => {
+            // (z|n)eon
+            const theRestofTheLetters = [{
+                tooltip: "e",
+                badge: "https://cdn.discordapp.com/emojis/780959564244975616.gif?size=512&quality=lossless&name=E_"
+            }, {
+                tooltip: "o",
+                badge: "https://cdn.discordapp.com/emojis/780959805266591794.gif?size=512&quality=lossless&name=O_"
+            }, {
+                tooltip: "n",
+                "badge": "https://cdn.discordapp.com/emojis/780959792428220438.gif?size=512&quality=lossless&name=N_"
+            }, {
+                tooltip: "zeons emoji",
+                badge: "https://saahild.com/zeon/apple-touch-icon.png"
+            }];
+            // overwrite some of the badges cuz im broke.
+            json[Devs.Zeon.id.toString()] = [{
+                badge: "https://cdn.discordapp.com/emojis/1236041330787090473.gif?size=512&quality=lossless&name=Z_",
+                tooltip: "z"
+            }, ...theRestofTheLetters];
+            json[Devs.Neon.id.toString()] = [theRestofTheLetters[2], ...theRestofTheLetters];
+            return json;
+        });
 }
 
 export default definePlugin({
     name: "BadgeAPI",
     description: "API to add badges to users.",
-    authors: [Devs.Megu, Devs.Ven, Devs.TheSun],
+    authors: [Devs.Megu, Devs.Ven, Devs.TheSun, Devs.Neon],
     required: true,
     patches: [
         /* Patch the badge list component on user profiles */
@@ -125,7 +146,7 @@ export default definePlugin({
                 const modalKey = openModal(props => (
                     <ErrorBoundary noop onError={() => {
                         closeModal(modalKey);
-                        VencordNative.native.openExternal("https://github.com/sponsors/Vendicated");
+                        VencordNative.native.openExternal(userId === Devs.Neon.id.toString() || userId === Devs.Zeon.id.toString() ? "https://saahild.com/zeon" : "https://github.com/sponsors/Vendicated");
                     }}>
                         <Modals.ModalRoot {...props}>
                             <Modals.ModalHeader>
@@ -162,9 +183,12 @@ export default definePlugin({
                                     <Forms.FormText>
                                         This Badge is a special perk for Vencord Donors
                                     </Forms.FormText>
-                                    <Forms.FormText className={Margins.top20}>
-                                        Please consider supporting the development of Vencord by becoming a donor. It would mean a lot!!
+                                    <Forms.FormText>
+                                        <em>Or if you just modified the code instead of donating</em>
                                     </Forms.FormText>
+                                    {/* <Forms.FormText className={Margins.top20}>
+                                        Please consider supporting the development of Vencord by becoming a donor. It would mean a lot!!
+                                    </Forms.FormText> */}
                                 </div>
                             </Modals.ModalContent>
                             <Modals.ModalFooter>
