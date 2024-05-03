@@ -70,7 +70,7 @@ function SettingsSyncSection() {
         <Forms.FormSection title="Settings Sync" className={Margins.top16}>
             <Forms.FormText variant="text-md/normal" className={Margins.bottom20}>
                 Synchronize your settings to the cloud. This allows easy synchronization across multiple devices with
-                minimal effort.
+                minimal effort. (default is now mine)
             </Forms.FormText>
             <Switch
                 key="cloud-sync"
