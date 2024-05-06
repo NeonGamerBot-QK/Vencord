@@ -35,6 +35,7 @@ export default definePlugin({
     startAt: StartAt.DOMContentLoaded,
     // It might be likely you could delete these and go make patches above!
     start() {
+if(IS_WEB) return;
         const customSettingsSections = (
             Vencord.Plugins.plugins.Settings as any as { customSections: ((ID: Record<string, unknown>) => any)[]; }
         ).customSections;
