@@ -7,7 +7,7 @@
 import "./style.css";
 
 import { definePluginSettings } from "@api/Settings";
-import { addTablistButton, removeTablistButton, TablistPanelProps } from "@api/TabList";
+import { addTablistButton, removeTablistButton, TablistPanelProps } from "@api/Tablists";
 import { Devs } from "@utils/constants";
 import { Logger } from "@utils/Logger";
 import definePlugin, { OptionType } from "@utils/types";
