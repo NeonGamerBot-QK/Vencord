@@ -28,7 +28,7 @@ const VENCORD_SRC_DIR = join(__dirname, "..");
 
 const execFile = promisify(cpExecFile);
 
-const isFlatpak = true; // guess what, flatpak dosent like forks. old code: process.platform === "linux" && !!process.env.FLATPAK_ID;
+const isFlatpak = process.platform === "linux" && !!process.env.FLATPAK_ID; // guess what, flatpak dosent like forks. old code: process.platform === "linux" && !!process.env.FLATPAK_ID;
 
 if (process.platform === "darwin") process.env.PATH = `/usr/local/bin:${process.env.PATH}`;
 
