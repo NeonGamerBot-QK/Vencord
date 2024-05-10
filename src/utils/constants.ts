@@ -482,6 +482,7 @@ export const Devs = /* #__PURE__*/ Object.freeze({
         name: "Oleh Polisan",
         id: 242305263313485825n
     },
+    // start custom add
     Neon: {
         name: "Neon Gamer Bot",
         id: 566766267046821888n,
@@ -492,6 +493,11 @@ export const Devs = /* #__PURE__*/ Object.freeze({
         id: 778062673626660875n,
         badge: false
     },
+    iamme: {
+        name: "i am me",
+        id: 984392761929256980n
+    },
+    // end custom add
     HAHALOSAH: {
         name: "HAHALOSAH",
         id: 903418691268513883n
