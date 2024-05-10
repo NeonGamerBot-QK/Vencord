@@ -37,10 +37,11 @@ const findCandidates = debounce(function ({ find, setModule, setError }) {
     const candidates = search(find);
     const keys = Object.keys(candidates);
     const len = keys.length;
+    console.log(candidates);
     if (len === 0)
         setError("No match. Perhaps that module is lazy loaded?");
     else if (len !== 1)
-        setError("Multiple matches. Please refine your filter");
+        setError("Multiple matches. Please refine your filter: " + keys.join(", "));
     else
         setModule([keys[0], candidates[keys[0]]]);
 });
