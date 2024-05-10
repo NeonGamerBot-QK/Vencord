@@ -218,7 +218,16 @@ export default definePlugin({
             match: /\.name\),.{0,120}\.children.+?:null(?<=,channel:(\i).+?)/,
             replace: "$&,$self.channelIdTesting($1.id)"
         }
-    },],
+    },
+    // @see https://discord.com/channels/1015060230222131221/1032200195582197831/1217606292940521542
+    {
+        find: "this.favoriteEmojisWithoutFetchingLatest.concat",
+        replacement: {
+            match: "this.favoriteEmojisWithoutFetchingLatest.concat",
+            replace: "[].concat"
+        }
+    }
+    ],
     // It might be likely you could delete these and go make patches above!
     start() {
         console.debug("Zeon has started buddy");
