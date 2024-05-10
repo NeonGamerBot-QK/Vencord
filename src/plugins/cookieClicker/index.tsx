@@ -7,7 +7,7 @@
 import "./style.css";
 
 import { definePluginSettings } from "@api/Settings";
-import { addTablistButton, removeTablistButton, TablistPanelProps } from "@api/Tablists";
+import { addTab, removeTab } from "@api/Tablists";
 import { Devs } from "@utils/constants";
 import { Logger } from "@utils/Logger";
 import definePlugin, { OptionType } from "@utils/types";
@@ -196,7 +196,7 @@ function giveCookiesPerSecond() {
 }
 
 
-function CookiePanelComponent(props: TablistPanelProps) {
+function CookiePanelComponent(props: any) {
     return (
         <div style={{ color: "white" }}>
             <span className={"cookies-counter"} id="cookie-title">Cookies {Game.cookies}</span>
@@ -276,14 +276,14 @@ export default definePlugin({
     settings: settings,
     start: async () => {
         logger.info("<[ Here to cheat or debug? ]>");
-        addTablistButton("cookie", "Cookie", CookiePanelComponent, false);
+        addTab("cookie", "Cookie", CookiePanelComponent, false);
         init();
         giveCookiesPerSecond();
         autoSaver();
     },
 
     stop: async () => {
-        removeTablistButton("cookie");
+        removeTab("cookie");
         Game.save();
     }
 });
