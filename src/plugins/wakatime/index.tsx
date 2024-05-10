@@ -64,6 +64,8 @@ async function handleAction() {
     lastHeartbeatAt = time;
     await sendHeartbeat(time);
 }
+const handler = handleAction.bind(this);
+
 export default definePlugin({
     name: "wakatime",
     description: "Wakatime plugin",
@@ -81,12 +83,12 @@ export default definePlugin({
         //   this.debug = true;
         //   console.log('WakaTime debug mode enabled');
         // }
-        const handler = handleAction.bind(this);
-        handleAction();
-        interId = setInterval(() => handler(), 120005);
+        // handleAction();
+        interId = document.addEventListener("click", () => handler());
     },
     stop() {
         console.log("Unloading WakaTime plugin");
-        clearInterval(interId);
+        // clearInterval(interId);
+        document.removeEventListener("click", () => handler());
     },
 });
