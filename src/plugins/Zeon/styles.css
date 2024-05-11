@@ -1,0 +1,40 @@
+.avatar__991e2 [src="https://cdn.discordapp.com/avatars/778062673626660875/bc1acc2f3144088b9502d556122c2add.webp?size=24"], [src="https://cdn.discordapp.com/avatars/778062673626660875/bc1acc2f3144088b9502d556122c2add.webp?size=80"], [src="https://cdn.discordapp.com/avatars/778062673626660875/bc1acc2f3144088b9502d556122c2add.webp?size=32"]
+{
+    animation: pulse 3.5s linear infinite;
+    border-radius: 50px;
+}
+[data-dnd-name="Zeon"] {
+    animation: pulse 3.5s linear infinite;
+    border-radius: 50px;
+}
+[data-dnd-name="Zeon"] .selected_e85eba {
+    animation: spin 3.5s linear infinite;
+}
+/* animation for moving image spin slow */
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+@keyframes rotate {
+    100% {
+        transform: translate(-50%, -50%) rotate(1turn);
+    }
+}
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 8px #daea4c, inset 0 0 8px #c8ea4c;
+    }
+    50% {
+        box-shadow: 0 0 16px #cdea4c, inset 0 0 14px #e0ea4c;
+    }
+    100% {
+        box-shadow: 0 0 8px #c8ea4c, inset 0 0 8px #c0ea4c;
+    }
+}
+.ready__61f2f {
+    content: "Zeon lives in here";
+}
