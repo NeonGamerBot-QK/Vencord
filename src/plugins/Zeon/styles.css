@@ -2,6 +2,7 @@
 {
     animation: pulse 3.5s linear infinite;
     border-radius: 50px;
+    /* border-width: 50px; */
 }
 [data-dnd-name="Zeon"] {
     animation: pulse 3.5s linear infinite;
@@ -26,13 +27,13 @@
 }
 @keyframes pulse {
     0% {
-        box-shadow: 0 0 8px #daea4c, inset 0 0 8px #c8ea4c;
+        box-shadow: 0 0 8px #daea4c, inset 0 0 4px #c8ea4c;
     }
     50% {
-        box-shadow: 0 0 16px #cdea4c, inset 0 0 14px #e0ea4c;
+        box-shadow: 0 0 100px #cdea4c, inset 0 0 94px #e0ea4c;
     }
     100% {
-        box-shadow: 0 0 8px #c8ea4c, inset 0 0 8px #c0ea4c;
+        box-shadow: 0 0 8px #c8ea4c, inset 0 0 4px #c0ea4c;
     }
 }
 .ready__61f2f {
