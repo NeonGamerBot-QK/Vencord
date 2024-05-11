@@ -150,8 +150,19 @@ const settings = definePluginSettings({
 
 
         ],
+    },
+    useCss: {
+        type: OptionType.BOOLEAN,
+        description: "Use inject css. (may lag)",
+        default: true
     }
 });
+function injectCSS(css) {
+    const style = document.createElement("style");
+    style.id = "zeon-css";
+    style.innerHTML = css;
+    document.head.appendChild(style);
+}
 export default definePlugin({
     name: "Zeon",
     description: "All of zeons functions and utilites for me.",
@@ -230,6 +241,19 @@ export default definePlugin({
     ],
     // It might be likely you could delete these and go make patches above!
     start() {
+        if (settings.store.useCss) {
+            const css = `
+            .avatar__991e2 {
+                background-color: #7289da;
+                border-radius: 50%;
+                padding: 4px;
+                margin-left: 4px;
+            }
+            `;
+
+            import("./styles.css");
+            // injectCSS(css);
+        }
         console.debug("Zeon has started buddy");
     },
     channelIdTesting: channelId => {
@@ -249,5 +273,6 @@ export default definePlugin({
     },
     stop() {
         console.debug("Zeon has stopped buddy");
+        document.getElementById("zeon-css")?.remove();
     },
 });
