@@ -1,14 +1,23 @@
-.avatar__991e2 [src="https://cdn.discordapp.com/avatars/778062673626660875/bc1acc2f3144088b9502d556122c2add.webp?size=24"], [src="https://cdn.discordapp.com/avatars/778062673626660875/bc1acc2f3144088b9502d556122c2add.webp?size=80"], [src="https://cdn.discordapp.com/avatars/778062673626660875/bc1acc2f3144088b9502d556122c2add.webp?size=32"]
+.avatar__991e2  [src^="https://cdn.discordapp.com/avatars/778062673626660875/bc1acc2f3144088b9502d556122c2add.webp"], [src*="bc1acc2f3144088b9502d556122c2add"], [src~="bc1acc2f3144088b9502d556122c2add"]
 {
-    animation: pulse 3.5s linear infinite;
-    border-radius: 50px;
+    animation: pulse 3s linear infinite;
+    /* border-radius: 50px; */
     /* border-width: 50px; */
 }
+.avatar__991e2   [src^="https://cdn.discordapp.com/avatars/778062673626660875/bc1acc2f3144088b9502d556122c2add.webp"]:hover, [src*="bc1acc2f3144088b9502d556122c2add"]:hover, [src~="bc1acc2f3144088b9502d556122c2add"]:hover
+{
+    animation: spin 3.5s linear infinite;
+    /* border-width: 50px; */
+}
+
 [data-dnd-name="Zeon"] {
     animation: pulse 3.5s linear infinite;
     border-radius: 50px;
 }
 [data-dnd-name="Zeon"] .selected_e85eba {
+    animation: spin 3.5s linear infinite;
+}
+[data-dnd-name="Zeon"]:hover {
     animation: spin 3.5s linear infinite;
 }
 /* animation for moving image spin slow */
@@ -37,5 +46,5 @@
     }
 }
 .ready__61f2f {
-    content: "Zeon lives in here";
+    content: "Zeon lives in here" !important;
 }
