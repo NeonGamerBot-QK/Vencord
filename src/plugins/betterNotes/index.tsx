@@ -16,75 +16,75 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-import { Settings } from "@api/Settings";
-import ErrorBoundary from "@components/ErrorBoundary";
-import { Devs } from "@utils/constants";
-import { canonicalizeMatch } from "@utils/patches";
-import definePlugin, { OptionType } from "@utils/types";
-import { findByPropsLazy } from "@webpack";
+import { Settings } from '@api/Settings'
+import ErrorBoundary from '@components/ErrorBoundary'
+import { Devs } from '@utils/constants'
+import { canonicalizeMatch } from '@utils/patches'
+import definePlugin, { OptionType } from '@utils/types'
+import { findByPropsLazy } from '@webpack'
 
-const UserPopoutSectionCssClasses = findByPropsLazy("section", "lastSection");
+const UserPopoutSectionCssClasses = findByPropsLazy('section', 'lastSection')
 
 export default definePlugin({
-    name: "BetterNotesBox",
-    description: "Hide notes or disable spellcheck (Configure in settings!!)",
-    authors: [Devs.Ven],
+  name: 'BetterNotesBox',
+  description: 'Hide notes or disable spellcheck (Configure in settings!!)',
+  authors: [Devs.Ven],
 
-    patches: [
-        {
-            find: "hideNote:",
-            all: true,
+  patches: [
+    {
+      find: 'hideNote:',
+      all: true,
             // Some modules match the find but the replacement is returned untouched
-            noWarn: true,
-            predicate: () => Vencord.Settings.plugins.BetterNotesBox.hide,
-            replacement: {
-                match: /hideNote:.+?(?=([,}].*?\)))/g,
-                replace: (m, rest) => {
-                    const destructuringMatch = rest.match(/}=.+/);
-                    if (destructuringMatch) {
-                        const defaultValueMatch = m.match(canonicalizeMatch(/hideNote:(\i)=!?\d/));
-                        return defaultValueMatch ? `hideNote:${defaultValueMatch[1]}=!0` : m;
-                    }
+      noWarn: true,
+      predicate: () => Vencord.Settings.plugins.BetterNotesBox.hide,
+      replacement: {
+        match: /hideNote:.+?(?=([,}].*?\)))/g,
+        replace: (m, rest) => {
+          const destructuringMatch = rest.match(/}=.+/)
+          if (destructuringMatch) {
+            const defaultValueMatch = m.match(canonicalizeMatch(/hideNote:(\i)=!?\d/))
+            return defaultValueMatch ? `hideNote:${defaultValueMatch[1]}=!0` : m
+          }
 
-                    return "hideNote:!0";
-                }
-            }
-        },
-        {
-            find: "Messages.NOTE_PLACEHOLDER",
-            replacement: {
-                match: /\.NOTE_PLACEHOLDER,/,
-                replace: "$&spellCheck:!Vencord.Settings.plugins.BetterNotesBox.noSpellCheck,"
-            }
-        },
-        {
-            find: ".popularApplicationCommandIds,",
-            replacement: {
-                match: /lastSection:(!?\i)}\),/,
-                replace: "$&$self.patchPadding({lastSection:$1}),"
-            }
+          return 'hideNote:!0'
         }
-    ],
-
-    options: {
-        hide: {
-            type: OptionType.BOOLEAN,
-            description: "Hide notes",
-            default: false,
-            restartNeeded: true
-        },
-        noSpellCheck: {
-            type: OptionType.BOOLEAN,
-            description: "Disable spellcheck in notes",
-            disabled: () => Settings.plugins.BetterNotesBox.hide,
-            default: false
-        }
+      }
     },
+    {
+      find: 'Messages.NOTE_PLACEHOLDER',
+      replacement: {
+        match: /\.NOTE_PLACEHOLDER,/,
+        replace: '$&spellCheck:!Vencord.Settings.plugins.BetterNotesBox.noSpellCheck,'
+      }
+    },
+    {
+      find: '.popularApplicationCommandIds,',
+      replacement: {
+        match: /lastSection:(!?\i)}\),/,
+        replace: '$&$self.patchPadding({lastSection:$1}),'
+      }
+    }
+  ],
 
-    patchPadding: ErrorBoundary.wrap(({ lastSection }) => {
-        if (!lastSection) return null;
-        return (
-            <div className={UserPopoutSectionCssClasses.lastSection} ></div>
-        );
-    })
-});
+  options: {
+    hide: {
+      type: OptionType.BOOLEAN,
+      description: 'Hide notes',
+      default: false,
+      restartNeeded: true
+    },
+    noSpellCheck: {
+      type: OptionType.BOOLEAN,
+      description: 'Disable spellcheck in notes',
+      disabled: () => Settings.plugins.BetterNotesBox.hide,
+      default: false
+    }
+  },
+
+  patchPadding: ErrorBoundary.wrap(({ lastSection }) => {
+    if (!lastSection) return null
+    return (
+      <div className={UserPopoutSectionCssClasses.lastSection} />
+    )
+  })
+})
