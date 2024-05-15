@@ -16,4 +16,4 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-export const DEFAULT_IMAGE_CACHE_DIR = "savedImages";
+export const DEFAULT_IMAGE_CACHE_DIR = 'savedImages'
