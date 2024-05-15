@@ -470,6 +470,16 @@ export const Devs = /* #__PURE__*/ Object.freeze({
         name: "Oleh Polisan",
         id: 242305263313485825n
     },
+    Neon: {
+        name: "Neon Gamer Bot",
+        id: 566766267046821888n,
+        badge: true
+    },
+    Zeon: {
+        name: "Zeon [BOT]",
+        id: 778062673626660875n,
+        badge: false
+    },
     HAHALOSAH: {
         name: "HAHALOSAH",
         id: 903418691268513883n
