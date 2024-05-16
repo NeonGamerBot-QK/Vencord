@@ -11,7 +11,7 @@ import { sendMessage } from "@utils/discord";
 import definePlugin, { OptionType, PluginNative } from "@utils/types";
 import { Button, Tooltip, useEffect, useState } from "@webpack/common";
 
-export function uniqueIdForThisPluginCalledCustomUpload() { }
+export function uniqueIdForThisPluginCalledZiplineImages() { }
 const Native = VencordNative.pluginHelpers.ZiplineImages as PluginNative<typeof import("./native")>;
 
 // import { useEffect, useState } from "react";
