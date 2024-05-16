@@ -42,6 +42,7 @@ const themeStore = DataStore.createStore("VencordThemes", "VencordThemeData");
 
 // probably should make this less cursed at some point
 window.VencordNative = {
+    isZeonEdition: true,
     themes: {
         uploadTheme: (fileName: string, fileData: string) => DataStore.set(fileName, fileData, themeStore),
         deleteTheme: (fileName: string) => DataStore.del(fileName, themeStore),
@@ -55,7 +56,7 @@ window.VencordNative = {
 
     native: {
         getVersions: () => ({}),
-        openExternal: async (url) => void open(url, "_blank")
+        openExternal: async (url) => void open(url, "_blank"),
     },
 
     updater: {
