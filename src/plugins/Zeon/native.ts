@@ -5,4 +5,4 @@
  */
 
 // just made the native file for now :)
-export const noop = () => { };
+export const noop = () => { }
