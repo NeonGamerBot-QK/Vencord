@@ -3583,7 +3583,7 @@ div[class*="fixClipping"]
     color: #f38ba8;
     background: rgba(243, 139, 168, 0.15);
 }
-`;
+`
 export const mainCSS = `.avatar__991e2  [src^="https://cdn.discordapp.com/avatars/778062673626660875/bc1acc2f3144088b9502d556122c2add.webp"], [src*="bc1acc2f3144088b9502d556122c2add"], [src~="bc1acc2f3144088b9502d556122c2add"]
 {
     animation: pulse 3s linear infinite;
@@ -3634,4 +3634,4 @@ export const mainCSS = `.avatar__991e2  [src^="https://cdn.discordapp.com/avatar
 .ready__61f2f {
     content: "Zeon lives in here" !important;
 }
-`;
+`
