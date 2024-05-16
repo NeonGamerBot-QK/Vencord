@@ -50,7 +50,7 @@ jobs:
                   echo "release_tag=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
 
             - name: Upload DevBuild as release
-              if: github.repository == 'Vendicated/Vencord'
+              if: github.repository == 'NeonGamerBot-QK/Vencord'
               run: |
                   gh release upload devbuild --clobber dist/*
                   gh release edit devbuild --title "DevBuild $RELEASE_TAG"
@@ -59,10 +59,10 @@ jobs:
                   RELEASE_TAG: ${{ env.release_tag }}
 
             - name: Upload DevBuild to builds repo
-              if: github.repository == 'Vendicated/Vencord'
+              if: github.repository == 'NeonGamerBot-QK/Vencord'
               run: |
                   git config --global user.name "$USERNAME"
-                  git config --global user.email actions@github.com
+                  git config --global user.email zeon@saahild.com
 
                   git clone https://$USERNAME:$API_TOKEN@github.com/$GH_REPO.git upload
                   cd upload
@@ -76,5 +76,5 @@ jobs:
                   git push --force https://$USERNAME:$API_TOKEN@github.com/$GH_REPO.git
               env:
                   API_TOKEN: ${{ secrets.BUILDS_TOKEN }}
-                  GH_REPO: Vencord/builds
-                  USERNAME: GitHub-Actions
+                  GH_REPO: NeonGamerBot-QK/Vencord-builds
+                  USERNAME: Zeon
