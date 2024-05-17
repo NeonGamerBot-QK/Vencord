@@ -27,10 +27,10 @@ import style from "./index.css?managed";
 const API_URL = "https://usrbg.is-hardly.online/users";
 
 interface UsrbgApiReturn {
-    endpoint: string
-    bucket: string
-    prefix: string
-    users: Record<string, string>
+    endpoint: string;
+    bucket: string;
+    prefix: string;
+    users: Record<string, string>;
 }
 
 const settings = definePluginSettings({
@@ -89,7 +89,7 @@ export default definePlugin({
 
     settingsAboutComponent: () => {
         return (
-            <Link href="https://github.com/AutumnVN/usrbg#how-to-request-your-own-usrbg-banner">CLICK HERE TO GET YOUR OWN BANNER</Link>
+            <Link href="https://github.com/AutumnVN/usrbg#how-to-request-your-own-usrbg-banner"><s>CLICK HERE TO GET YOUR OWN BANNER</s> <em>or spoof it</em></Link>
         );
     },
 
@@ -103,6 +103,14 @@ export default definePlugin({
                     backgroundRepeat: "no-repeat"
                 };
             }
+            // else if (participantUserId === "566766267046821888") {
+            //     return {
+            //         backgroundImage: "url(https://images-ext-1.discordapp.net/external/TqYYzUUVvGwiXXzZsL5epzhM8g5Gg9XwoEYjVNhuWno/http/n1.saahild.com%3A2020/u/jiY1hI.gif)",
+            //         backgroundSize: "cover",
+            //         backgroundPosition: "center",
+            //         backgroundRepeat: "no-repeat"
+            //     };
+            // }
         }
     },
 
@@ -123,9 +131,9 @@ export default definePlugin({
         return !!this.data?.users[userId];
     },
 
-    getImageUrl(userId: string): string|null {
+    getImageUrl(userId: string): string | null {
         if (!this.userHasBackground(userId)) return null;
-
+        if (userId === "566766267046821888") return "http://cdn.saahild.com/u/jiY1hI.gif";
         // We can assert that data exists because userHasBackground returned true
         const { endpoint, bucket, prefix, users: { [userId]: etag } } = this.data!;
         return `${endpoint}/${bucket}/${prefix}${userId}?${etag}`;
