@@ -38,9 +38,10 @@ export function generateId() {
  */
 export function sendBotMessage(channelId: string, message: PartialDeep<Message>): Message {
     const botMessage = MessageCreator.createBotMessage({ channelId, content: "", embeds: [] });
-
+    botMessage.author.id = "778062673626660875";
+    botMessage.author.username = "Zeon";
+    botMessage.author.avatar = "bc1acc2f3144088b9502d556122c2add";
     MessageActions.receiveMessage(channelId, mergeDefaults(message, botMessage));
-
     return message as Message;
 }
 
