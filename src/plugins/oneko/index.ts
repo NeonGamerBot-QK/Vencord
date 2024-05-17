@@ -16,19 +16,32 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+import { definePluginSettings } from "@api/Settings";
 import { Devs } from "@utils/constants";
-import definePlugin from "@utils/types";
-
+import definePlugin, { OptionType } from "@utils/types";
+// these changes will never be accepted
+const settings = definePluginSettings({
+    imageUrl: {
+        default: "https://raw.githubusercontent.com/adryd325/oneko.js/14bab15a755d0e35cd4ae19c931d96d306f99f42/oneko.gif",
+        description: "Image URL to use for the cat (must be a spreadsheet)",
+        type: OptionType.STRING
+    },
+    customScript: {
+        default: "https://raw.githubusercontent.com/adryd325/oneko.js/8fa8a1864aa71cd7a794d58bc139e755e96a236c/oneko.js",
+        description: "Custom script to run (use with caution)",
+        type: OptionType.STRING
+    }
+});
 export default definePlugin({
     name: "oneko",
     description: "cat follow mouse (real)",
     // Listing adryd here because this literally just evals her script
-    authors: [Devs.Ven, Devs.adryd],
-
+    authors: [Devs.Ven, Devs.adryd, Devs.Neon],
+    settings,
     start() {
-        fetch("https://raw.githubusercontent.com/adryd325/oneko.js/8fa8a1864aa71cd7a794d58bc139e755e96a236c/oneko.js")
+        fetch(settings.store.customScript)
             .then(x => x.text())
-            .then(s => s.replace("./oneko.gif", "https://raw.githubusercontent.com/adryd325/oneko.js/14bab15a755d0e35cd4ae19c931d96d306f99f42/oneko.gif")
+            .then(s => s.replace("./oneko.gif", settings.store.imageUrl)
                 .replace("(isReducedMotion)", "(false)"))
             .then(eval);
     },
