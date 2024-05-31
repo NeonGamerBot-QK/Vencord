@@ -1,32 +1,21 @@
 /*
- * Vencord, a modification for Discord's desktop app
- * Copyright (c) 2023 Vendicated and contributors
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
-*/
+ * Vencord, a Discord client mod
+ * Zeons edition
+ * Copyright (c) 2024 Vendicated and contributors
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
 
 import ErrorBoundary from "@components/ErrorBoundary";
 import { Link } from "@components/Link";
 import { openUpdaterModal } from "@components/VencordSettings/UpdaterTab";
 import { Devs, SUPPORT_CHANNEL_ID } from "@utils/constants";
+import { insertTextIntoChatInputBox } from "@utils/discord";
 import { Margins } from "@utils/margins";
 import { isPluginDev } from "@utils/misc";
 import { relaunch } from "@utils/native";
-import { makeCodeblock } from "@utils/text";
 import definePlugin from "@utils/types";
 import { isOutdated, update } from "@utils/updater";
-import { Alerts, Card, ChannelStore, Forms, GuildMemberStore, NavigationRouter, Parser, RelationshipStore, UserStore } from "@webpack/common";
+import { Alerts, Card, ChannelStore, DraftType, Forms, GuildMemberStore, NavigationRouter, Parser, PermissionsBits, PermissionStore, RelationshipStore, UploadHandler, UploadManager, UserStore } from "@webpack/common";
 
 import gitHash from "~git-hash";
 import plugins from "~plugins";
@@ -37,6 +26,7 @@ const VENCORD_GUILD_ID = "1015060230222131221";
 
 const AllowedChannelIds = [
     SUPPORT_CHANNEL_ID,
+    "1179990006140514304", // zeon priv channel
     "1024286218801926184", // Vencord > #bot-spam
     "1033680203433660458", // Vencord > #v
 ];
@@ -46,12 +36,20 @@ const TrustedRolesIds = [
     "1026504932959977532", // regular
     "1042507929485586532", // donor
 ];
+function hasPermission(channelId: string, permission: bigint) {
+    const channel = ChannelStore.getChannel(channelId);
+
+    if (!channel || channel.isPrivate()) return true;
+
+    return PermissionStore.can(permission, channel);
+}
+const hasAttachmentPerms = (channelId: string) => hasPermission(channelId, PermissionsBits.ATTACH_FILES);
 
 export default definePlugin({
     name: "SupportHelper",
     required: true,
     description: "Helps us provide support to you",
-    authors: [Devs.Ven],
+    authors: [Devs.Ven, Devs.Neon],
     dependencies: ["CommandsAPI"],
 
     patches: [{
@@ -66,14 +64,21 @@ export default definePlugin({
         name: "vencord-debug",
         description: "Send Vencord Debug info",
         predicate: ctx => AllowedChannelIds.includes(ctx.channel.id),
-        async execute() {
+        async execute(ops, cmdCtx) {
+            UploadManager.clearAll(cmdCtx.channel.id, DraftType.SlashCommand);
             const { RELEASE_CHANNEL } = window.GLOBAL_ENV;
+            // clear everything cuz ts aint working
+            UploadManager.clearAll(cmdCtx.channel.id, DraftType.ChannelMessage);
+            UploadManager.clearAll(cmdCtx.channel.id, DraftType.ApplicationLauncherCommand);
+            UploadManager.clearAll(cmdCtx.channel.id, DraftType.FirstThreadMessage);
+            UploadManager.clearAll(cmdCtx.channel.id, DraftType.Poll);
+            UploadManager.clearAll(cmdCtx.channel.id, DraftType.ThreadSettings);
+            await UploadManager.clearAll(cmdCtx.channel.id, DraftType.SlashCommand);
 
             const client = (() => {
                 if (IS_DISCORD_DESKTOP) return `Discord Desktop v${DiscordNative.app.getVersion()}`;
                 if (IS_VESKTOP) return `Vesktop v${VesktopNative.app.getVersion()}`;
                 if ("armcord" in window) return `ArmCord v${window.armcord.version}`;
-
                 // @ts-expect-error
                 const name = typeof unsafeWindow !== "undefined" ? "UserScript" : "Web";
                 return `${name} (${navigator.userAgent})`;
@@ -85,7 +90,7 @@ export default definePlugin({
 
             const info = {
                 Vencord:
-                    `v${VERSION} • [${gitHash}](<https://github.com/Vendicated/Vencord/commit/${gitHash}>)` +
+                    `v${VERSION} • [${gitHash}](<https://github.com/NeonGamerBot-QK/Vencord/commit/${gitHash}>)` +
                     `${settings.additionalInfo} - ${Intl.DateTimeFormat("en-GB", { dateStyle: "medium" }).format(BUILD_TIMESTAMP)}`,
                 Client: `${RELEASE_CHANNEL} ~ ${client}`,
                 Platform: window.navigator.platform
@@ -96,15 +101,40 @@ export default definePlugin({
             }
 
             const debugInfo = `
->>> ${Object.entries(info).map(([k, v]) => `**${k}**: ${v}`).join("\n")}
+            ## NOTICE: THIS IS A COMPLETE FORK OF VENCORD!!! ##
+${Object.entries(info).map(([k, v]) => `**${k}**: ${v}`).join("\n")}
 
 Enabled Plugins (${enabledPlugins.length}):
-${makeCodeblock(enabledPlugins.join(", "))}
+${enabledPlugins.join(", ")}
 `;
+            if (hasAttachmentPerms(cmdCtx.channel.id)) {
+                const file = new File([debugInfo], "debug.txt", { type: "text/plain" });
+                UploadManager.clearAll(cmdCtx.channel.id, DraftType.ChannelMessage);
+                setTimeout(() => {
+                    UploadManager.clearAll(cmdCtx.channel.id, DraftType.SlashCommand);
+                    UploadHandler.promptToUpload([file], cmdCtx.channel, DraftType.ChannelMessage);
+                }, 1000);
+            } else if (debugInfo.length > 2000) {
+                fetch("https://bin.saahild.com/documents", {
+                    method: "POST",
+                    body: debugInfo,
+                    headers: {
+                        "Content-Type": "text/plain"
+                    }
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        // console.log(data);
+                        insertTextIntoChatInputBox("https://bin.saahild.com/" + data.key);
+                        // copyWithToast(settings.store.url + "/" + data.key, "Copied URL");
+                    })
+                    .catch(console.error);
+            } else {
+                return {
+                    content: debugInfo.trim().replaceAll("```\n", "```")
+                };
+            }
 
-            return {
-                content: debugInfo.trim().replaceAll("```\n", "```")
-            };
         }
     }],
 
