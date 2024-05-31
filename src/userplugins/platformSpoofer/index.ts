@@ -22,6 +22,10 @@ const settings = definePluginSettings({
             {
                 label: "Web",
                 value: "web"
+            },
+            { // DISCORD CAN DETECT IF YOU'RE NOT ACTUALLY ON MOBILE, PERHAPS THIS OPTION SHOULD BE REMOVED
+                label: "Mobile",
+                value: "mobile"
             }
         ]
     }
@@ -29,7 +33,7 @@ const settings = definePluginSettings({
 
 export default definePlugin({
     name: "PlatformSpoofer",
-    description: "Spoof what platform or device you're on (potentially dangerous, i'm not sure)",
+    description: "Spoof what platform or device you're on",
     authors: [SuncordDevs.Drag],
     settings: settings,
     patches: [
@@ -47,6 +51,9 @@ export default definePlugin({
                 return { browser: "Discord Client" };
             case "web":
                 return { browser: "Chrome" };
+            // DISCORD CAN DETECT IF YOU'RE NOT ACTUALLY ON MOBILE, PERHAPS THIS OPTION SHOULD BE REMOVED
+            case "mobile":
+                return { browser: "Discord iOS" };
         }
 
     }

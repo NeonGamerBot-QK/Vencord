@@ -535,6 +535,8 @@ export const Devs = /* #__PURE__*/ Object.freeze({
         id: 328165170536775680n
     },
 } satisfies Record<string, Dev>);
+export const SuncordDevs = Devs;
+export const EquicordDevs = Devs;
 
 // iife so #__PURE__ works correctly
 export const DevsById = /* #__PURE__*/ (() =>
