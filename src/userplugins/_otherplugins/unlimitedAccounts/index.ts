@@ -16,20 +16,20 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-import { EquicordDevs } from "@utils/constants";
-import definePlugin from "@utils/types";
+import { EquicordDevs } from '@utils/constants'
+import definePlugin from '@utils/types'
 
 export default definePlugin({
-    name: "UnlimitedAccounts",
-    description: "Increases the amount of accounts you can add.",
-    authors: [EquicordDevs.Balaclava, EquicordDevs.thororen],
-    patches: [
-        {
-            find: "multiaccount_cta_tooltip_seen",
-            replacement: {
-                match: /(let \i=)\d+(,\i="switch-accounts-modal",\i="multiaccount_cta_tooltip_seen")/,
-                replace: "$1Infinity$2",
-            },
-        },
-    ],
-});
+  name: 'UnlimitedAccounts',
+  description: 'Increases the amount of accounts you can add.',
+  authors: [EquicordDevs.Balaclava, EquicordDevs.thororen],
+  patches: [
+    {
+      find: 'multiaccount_cta_tooltip_seen',
+      replacement: {
+        match: /(let \i=)\d+(,\i="switch-accounts-modal",\i="multiaccount_cta_tooltip_seen")/,
+        replace: '$1Infinity$2'
+      }
+    }
+  ]
+})
