@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-import { profileCommand } from "./robloxProfile";
-import { taxCommand } from "./robuxTax";
+import { profileCommand } from './robloxProfile'
+import { taxCommand } from './robuxTax'
 
-export { profileCommand, taxCommand };
+export { profileCommand, taxCommand }
