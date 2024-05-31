@@ -10,7 +10,7 @@ import definePlugin from "@utils/types";
 import { FluxDispatcher } from "@webpack/common";
 import { UserStore } from "@webpack/common";
 import { Message } from "discord-types/general";
-import { getApplicationAsset } from "plugins/customRPC";
+// import { getApplicationAsset } from "plugins/customRPC";
 
 async function setRpc(disable?: boolean, details?: string) {
 
@@ -21,7 +21,7 @@ async function setRpc(disable?: boolean, details?: string) {
         "type": 0,
         "flags": 1,
         "assets": {
-            "large_image": await getApplicationAsset(UserStore.getCurrentUser().getAvatarURL())
+            //    "large_image": await getApplicationAsset(UserStore.getCurrentUser().getAvatarURL())
         }
     };
     FluxDispatcher.dispatch({
@@ -62,15 +62,12 @@ interface IMessageCreate {
     message: Message;
 }
 
-async function updateData()
-{
+async function updateData() {
     let messagesSent;
-    if(await DataStore.get("RPCStatsDate") == getCurrentDate())
-    {
+    if (await DataStore.get("RPCStatsDate") == getCurrentDate()) {
         messagesSent = await DataStore.get("RPCStatsMessages");
     }
-    else
-    {
+    else {
         await DataStore.set("RPCStatsDate", getCurrentDate());
         await DataStore.set("RPCStatsMessages", 0);
         messagesSent = 0;
@@ -82,12 +79,10 @@ export default definePlugin({
     name: "RPCStats",
     description: "Displays stats about your current session in your rpc",
     authors: [Devs.Samwich],
-    async start()
-    {
+    async start() {
         updateData();
     },
-    stop()
-    {
+    stop() {
         setRpc(true);
     },
     flux:
