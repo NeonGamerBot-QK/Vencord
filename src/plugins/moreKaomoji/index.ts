@@ -1,20 +1,9 @@
 /*
- * Vencord, a modification for Discord's desktop app
- * Copyright (c) 2022 Vendicated and contributors
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
-*/
+ * Vencord, a Discord client mod
+ * Zeons edition
+ * Copyright (c) 2024 Vendicated and contributors
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ */
 
 import { findOption, OptionalMessageOption } from "@api/Commands";
 import { Devs } from "@utils/constants";
@@ -130,7 +119,7 @@ wizard:(∩｀-´)⊃━☆ﾟ.*･｡ﾟ
 worried:(´･_･\`)
 yum:(っ˘ڡ˘ς)
 zombie:[¬º-°]¬
-zoned:(⊙_◎)`.split("\n");
+zoned:(⊙_◎)`.split("\n").filter(Boolean);
 
 export default definePlugin({
     name: "MoreKaomoji",
@@ -152,7 +141,7 @@ export default definePlugin({
         ...more_emojis.map(emoji => ({
             name: emoji.split(":")[0],
             description: emoji.split(":")[1]
-        }))
+        })).filter(e => e.name)
     ].map(data => ({
         ...data,
         options: [OptionalMessageOption],
