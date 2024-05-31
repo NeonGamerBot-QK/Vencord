@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-export async function rebuildAndRestart() {
-    await VencordNative.updater.rebuild();
-    window.DiscordNative.app.relaunch();
+export async function rebuildAndRestart () {
+  await VencordNative.updater.rebuild()
+  window.DiscordNative.app.relaunch()
 }
