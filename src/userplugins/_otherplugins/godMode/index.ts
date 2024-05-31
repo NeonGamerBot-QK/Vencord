@@ -16,18 +16,18 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-import { Devs } from "@utils/constants";
-import definePlugin from "@utils/types";
-import { PermissionStore } from "@webpack/common";
+import { Devs } from '@utils/constants'
+import definePlugin from '@utils/types'
+import { PermissionStore } from '@webpack/common'
 
 export default definePlugin({
-    name: "GodMode",
-    description: "Get all permissions (client-side).",
-    authors: [Devs.Tolgchu],
+  name: 'GodMode',
+  description: 'Get all permissions (client-side).',
+  authors: [Devs.Tolgchu],
 
-    start: () => {
-        ["can", "canAccessMemberSafetyPage", "canAccessGuildSettings", "canBasicChannel", "canImpersonateRole", "canManageUser", "canWithPartialContext", "getGuildVersion", "getChannelsVersion", "getChannelPermissions", "getHighestRole", "initialize", "constructor", "isRoleHigher"].forEach(a => PermissionStore.__proto__[a] = () => !0);
-    },
+  start: () => {
+    ['can', 'canAccessMemberSafetyPage', 'canAccessGuildSettings', 'canBasicChannel', 'canImpersonateRole', 'canManageUser', 'canWithPartialContext', 'getGuildVersion', 'getChannelsVersion', 'getChannelPermissions', 'getHighestRole', 'initialize', 'constructor', 'isRoleHigher'].forEach(a => PermissionStore.__proto__[a] = () => !0)
+  },
 
-    stop: () => { }
-});
+  stop: () => { }
+})
