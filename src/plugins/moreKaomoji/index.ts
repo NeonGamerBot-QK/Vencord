@@ -5,9 +5,9 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-import { findOption, OptionalMessageOption } from '@api/Commands';
-import { Devs } from '@utils/constants';
-import definePlugin from '@utils/types';
+import { findOption, OptionalMessageOption } from '@api/Commands'
+import { Devs } from '@utils/constants'
+import definePlugin from '@utils/types'
 // @see https://github.com/dysfunc/ascii-emoji/blob/master/emojis
 const more_emojis = `
 4chan-emoticon:( ͡° ͜ʖ ͡°)
@@ -119,7 +119,7 @@ wizard:(∩｀-´)⊃━☆ﾟ.*･｡ﾟ
 worried:(´･_･\`)
 yum:(っ˘ڡ˘ς)
 zombie:[¬º-°]¬
-zoned:(⊙_◎)`.split('\n').filter(Boolean);
+zoned:(⊙_◎)`.split('\n').filter(Boolean)
 
 export default definePlugin({
   name: 'MoreKaomoji',
@@ -149,4 +149,4 @@ export default definePlugin({
       content: findOption(opts, 'message', '') + data.description
     })
   }))
-});
+})
