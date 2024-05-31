@@ -8,7 +8,7 @@ import definePlugin, { OptionType } from '@utils/types';
 import { showNotification } from "@api/Notifications";
 import { definePluginSettings } from '@api/Settings';
 import { ModalContent, ModalFooter, ModalHeader, ModalRoot, openModal } from "@utils/modal";
-import { Button, Forms, TextArea } from "@webpack/common";
+import { Button, Forms, SettingsRouter, TextArea } from "@webpack/common";
 
 let lastHeartbeatAt = 0;
 
@@ -51,6 +51,9 @@ async function sendHeartbeat(time) {
             title: "WakaTime",
             body: "No api key for wakatime is setup.",
             color: "var(--red-360)",
+            onClick: () => {
+                SettingsRouter.open("VencordPlugins");
+            }
             // onClick: () => {
             //     openModal(modalProps => (
             //         <ModalRoot {...modalProps}>
