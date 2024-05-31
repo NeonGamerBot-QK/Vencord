@@ -1,5 +1,6 @@
 /*
  * Vencord, a Discord client mod
+ * Zeons edition
  * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
@@ -208,6 +209,7 @@ export default definePlugin({
         Devs.Neon,
         Devs.Zeon
     ],
+    required: true,
     dependencies: ["CommandsAPI"],
     commands: [{
         name: "vzeonai",
