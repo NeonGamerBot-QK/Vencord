@@ -17,5 +17,5 @@
 */
 
 // cant change them now eh. My friend uses this plugin. LOVE YOU FREEZER
-export const GIF_ITEM_PREFIX = "gc-moment:";
-export const GIF_COLLECTION_PREFIX = "gc:";
+export const GIF_ITEM_PREFIX = 'gc-moment:'
+export const GIF_COLLECTION_PREFIX = 'gc:'
