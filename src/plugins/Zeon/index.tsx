@@ -6,15 +6,18 @@
  */
 
 import { ApplicationCommandInputType, ApplicationCommandOptionType, findOption, sendBotMessage } from "@api/Commands";
+import { NavContextMenuPatchCallback } from "@api/ContextMenu";
 import { definePluginSettings } from "@api/Settings";
 import ErrorBoundary from "@components/ErrorBoundary";
 import { Devs } from "@utils/constants";
 import definePlugin, { OptionType, PluginNative } from "@utils/types";
-import { ChannelStore, SelectedChannelStore, Tooltip, UserStore, useStateFromStores } from "@webpack/common";
+import { findByPropsLazy } from "@webpack";
+import { ChannelStore, Menu, SelectedChannelStore, Tooltip, UserStore, useStateFromStores } from "@webpack/common";
 
 import { mainCSS, themeCSS } from "./cssExports";
 export function uniqueIdForThisPluginCalledZeon() { }
 const Native = VencordNative.pluginHelpers.Zeon as PluginNative<typeof import("./native")>;
+const OptionClasses = findByPropsLazy("optionName", "optionIcon", "optionLabel");
 
 function ZeonIndicator({ channelId }: { channelId: string; }) {
     // const typingUsers: Record<string, number> = useStateFromStores(
@@ -57,6 +60,7 @@ function ZeonIndicator({ channelId }: { channelId: string; }) {
             icon = <><svg style={{ fill: "var(--channel-icon)", height: "24px", width: "24px" }} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>pizza</title><path d="M12,15A2,2 0 0,1 10,13C10,11.89 10.9,11 12,11A2,2 0 0,1 14,13A2,2 0 0,1 12,15M7,7C7,5.89 7.89,5 9,5A2,2 0 0,1 11,7A2,2 0 0,1 9,9C7.89,9 7,8.1 7,7M12,2C8.43,2 5.23,3.54 3,6L12,22L21,6C18.78,3.54 15.57,2 12,2Z" /></svg></>;
             break;
         case "1178493043100352553":
+        case "1241061255104561173":
             icon = <><svg style={{ fill: "var(--channel-icon)", height: "24px", width: "24px" }} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M64 0C28.7 0 0 28.7 0 64V352c0 35.3 28.7 64 64 64h96v80c0 6.1 3.4 11.6 8.8 14.3s11.9 2.1 16.8-1.5L309.3 416H448c35.3 0 64-28.7 64-64V64c0-35.3-28.7-64-64-64H64z" /></svg></>;
             break;
         case "1178158179385888879":
@@ -65,7 +69,7 @@ function ZeonIndicator({ channelId }: { channelId: string; }) {
         case "1237024834790100992":
             icon = <><svg style={{ fill: "var(--channel-icon)", height: "24px", width: "24px" }} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M499.1 6.3c8.1 6 12.9 15.6 12.9 25.7v72V368c0 44.2-43 80-96 80s-96-35.8-96-80s43-80 96-80c11.2 0 22 1.6 32 4.6V147L192 223.8V432c0 44.2-43 80-96 80s-96-35.8-96-80s43-80 96-80c11.2 0 22 1.6 32 4.6V200 128c0-14.1 9.3-26.6 22.8-30.7l320-96c9.7-2.9 20.2-1.1 28.3 5z" /></svg></>;
             break;
-        case "1178489699686432828":
+        case "1246273635291893812":
         case "1210399621478748230":
             icon = <><svg style={{ fill: "var(--channel-icon)", height: "24px", width: "24px" }} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M569.5 440C588 472 564.8 512 527.9 512H48.1c-36.9 0-60-40.1-41.6-72L246.4 24c18.5-32 64.7-32 83.2 0l239.9 416zM288 354c-25.4 0-46 20.6-46 46s20.6 46 46 46 46-20.6 46-46-20.6-46-46-46zm-43.7-165.3l7.4 136c.3 6.4 5.6 11.3 12 11.3h48.5c6.4 0 11.6-5 12-11.3l7.4-136c.4-6.9-5.1-12.7-12-12.7h-63.4c-6.9 0-12.4 5.8-12 12.7z" /></svg></>;
             break;
@@ -195,6 +199,21 @@ const settings = definePluginSettings({
         default: false // this one might actually cause lag
     }
 });
+const ctxMenuPatch: NavContextMenuPatchCallback = (children, props) => {
+    if (props.channel.id !== "778065193497657346") return;
+    children.push(
+        <Menu.MenuItem
+            id="vc-activate-zeon"
+            label={
+                <div className={OptionClasses.optionLabel}>
+                    {/* <Microphone className={OptionClasses.optionIcon} height={24} width={24} /> */}
+                    <div className={OptionClasses.optionName}>Zeon Activation</div>
+                </div>
+            }
+        // action={() => openModal(modalProps => <Modal modalProps={modalProps} />)}
+        />
+    );
+};
 function injectCSS(css) {
     const style = document.createElement("style");
     style.id = "zeon-css";
@@ -210,6 +229,9 @@ export default definePlugin({
         Devs.Zeon
     ],
     required: true,
+    contextMenus: {
+        "channel-attach": ctxMenuPatch
+    },
     dependencies: ["CommandsAPI"],
     commands: [{
         name: "vzeonai",
