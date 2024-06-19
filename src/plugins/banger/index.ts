@@ -16,19 +16,19 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-import { Devs } from '@utils/constants';
-import definePlugin, { OptionType } from '@utils/types';
+import { Devs } from '@utils/constants'
+import definePlugin, { OptionType } from '@utils/types'
 
 export default definePlugin({
-  name: "BANger",
-  description: "Replaces the GIF in the ban dialogue with a custom one.",
+  name: 'BANger',
+  description: 'Replaces the GIF in the ban dialogue with a custom one.',
   authors: [Devs.Xinto, Devs.Glitch],
   patches: [
     {
-      find: "BAN_CONFIRM_TITLE.",
+      find: 'BAN_CONFIRM_TITLE.',
       replacement: {
         match: /src:\i\("?\d+"?\)/g,
-        replace: "src: Vencord.Settings.plugins.BANger.source"
+        replace: 'src: Vencord.Settings.plugins.BANger.source'
       }
     }
   ],
@@ -40,4 +40,4 @@ export default definePlugin({
       restartNeeded: true
     }
   }
-});
+})
