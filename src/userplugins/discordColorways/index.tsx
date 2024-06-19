@@ -131,7 +131,7 @@ export const versionData = {
 };
 
 export default definePlugin({
-    name: "DiscordColorways",
+    name: "DiscordColorways[BROKEN]",
     description: "A plugin that offers easy access to simple color schemes/themes for Discord, also known as Colorways",
     authors: [{
         name: "DaBluLite",
