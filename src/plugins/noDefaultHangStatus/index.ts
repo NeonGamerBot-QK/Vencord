@@ -4,8 +4,8 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-import { Devs } from '@utils/constants';
-import definePlugin from '@utils/types';
+import { Devs } from '@utils/constants'
+import definePlugin from '@utils/types'
 
 export default definePlugin({
   name: 'NoDefaultHangStatus',
@@ -14,11 +14,11 @@ export default definePlugin({
 
   patches: [
     {
-      find: ".CHILLING)",
+      find: '.CHILLING)',
       replacement: {
         match: /{enableHangStatus:(\i),/,
-        replace: "{_enableHangStatus:$1=false,"
+        replace: '{_enableHangStatus:$1=false,'
       }
     }
   ]
-});
+})
