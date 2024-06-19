@@ -34,15 +34,6 @@ export default definePlugin({
   ],
   options: {
     source: {
-      description: "Source to replace ban GIF with (Video or Gif)",
-      type: OptionType.STRING,
-      default: "https://i.imgur.com/wp5q52C.mp4",
-      restartNeeded: true,
-    }
-  }
-  ],
-  options: {
-    source: {
       description: 'Source to replace ban GIF with (Video or Gif)',
       type: OptionType.STRING,
       default: 'https://i.imgur.com/wp5q52C.mp4',
