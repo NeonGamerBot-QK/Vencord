@@ -1,6 +1,7 @@
 /*
  * Vencord, a Discord client mod
- * Copyright (c) 2023 Vendicated and contributors
+ * Zeons edition
+ * Copyright (c) 2024 Vendicated and contributors
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
@@ -18,7 +19,7 @@ import {
 } from "@webpack/common";
 import { FluxEvents } from "@webpack/types";
 
-import { versionData } from "../../";
+import { versionData } from "../..";
 import { fallbackColorways } from "../../constants";
 import { Colorway } from "../../types";
 
