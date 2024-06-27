@@ -5,9 +5,9 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-import { findOption, OptionalMessageOption } from '@api/Commands'
-import { Devs } from '@utils/constants'
-import definePlugin from '@utils/types'
+import { findOption, OptionalMessageOption } from "@api/Commands";
+import { Devs } from "@utils/constants";
+import definePlugin from "@utils/types";
 // @see https://github.com/dysfunc/ascii-emoji/blob/master/emojis
 const more_emojis = `
 4chan-emoticon:( ͡° ͜ʖ ͡°)
@@ -119,13 +119,13 @@ wizard:(∩｀-´)⊃━☆ﾟ.*･｡ﾟ
 worried:(´･_･\`)
 yum:(っ˘ڡ˘ς)
 zombie:[¬º-°]¬
-zoned:(⊙_◎)`.split('\n').filter(Boolean)
+zoned:(⊙_◎)`.split("\n").filter(Boolean);
 
 export default definePlugin({
-  name: 'MoreKaomoji',
-  description: 'Adds more Kaomoji to discord. ヽ(´▽`)/',
+  name: "MoreKaomoji",
+  description: "Adds more Kaomoji to discord. ヽ(´▽`)/",
   authors: [Devs.JacobTm],
-  dependencies: ['CommandsAPI'],
+  dependencies: ["CommandsAPI"],
   commands: [
     // { name: 'dissatisfaction', description: ' ＞﹏＜' },
     // { name: 'smug', description: ' ಠ_ಠ' },
@@ -139,14 +139,14 @@ export default definePlugin({
     // { name: 'sleeping', description: '(ᴗ_ᴗ)' },
     // { name: 'laughing', description: 'o(≧▽≦)o' },
     ...more_emojis.map(emoji => ({
-      name: emoji.split(':')[0],
-      description: emoji.split(':')[1]
+      name: emoji.split(":")[0],
+      description: emoji.split(":")[1]
     })).filter(e => e.name)
   ].map(data => ({
     ...data,
     options: [OptionalMessageOption],
     execute: opts => ({
-      content: findOption(opts, 'message', '') + data.description
+      content: findOption(opts, "message", "") + data.description
     })
   }))
-})
+});
