@@ -6,6 +6,7 @@
  */
 
 import { addAccessory } from "@api/MessageAccessories";
+import { definePluginSettings } from "@api/Settings";
 import { getUserSettingLazy } from "@api/UserSettings";
 import ErrorBoundary from "@components/ErrorBoundary";
 import { Flex } from "@components/Flex";
@@ -21,12 +22,13 @@ import { onlyOnce } from "@utils/onlyOnce";
 import { makeCodeblock } from "@utils/text";
 import definePlugin from "@utils/types";
 import { checkForUpdates, isOutdated, update } from "@utils/updater";
-import { Alerts, Button, Card, ChannelStore, DraftType, Forms, GuildMemberStore, Parser, PermissionsBits, PermissionStore, RelationshipStore, showToast, Toasts, UploadHandler, UploadManager, UserStore } from "@webpack/common";
+// import { Alerts, Button, Card, ChannelStore, Forms, GuildMemberStore, Parser, RelationshipStore, showToast, Toasts, UserStore } from "@webpack/common";
+import { Alerts, Button, Card, ChannelStore, DraftType, Forms, GuildMemberStore, Parser, PermissionsBits, Text, PermissionStore, RelationshipStore, showToast, Toasts, UploadHandler, UploadManager, UserStore } from "@webpack/common";
 
 import gitHash from "~git-hash";
 import plugins, { PluginMeta } from "~plugins";
 
-import settings from "./settings";
+import SettingsPlugin from "./settings";
 
 const VENCORD_GUILD_ID = "1015060230222131221";
 const VENBOT_USER_ID = "1017176847865352332";
@@ -84,7 +86,7 @@ async function generateDebugInfoMessage() {
     const info = {
         Vencord:
             `v${VERSION} • [${gitHash}](<https://github.com/Vendicated/Vencord/commit/${gitHash}>)` +
-            `${settings.additionalInfo} - ${Intl.DateTimeFormat("en-GB", { dateStyle: "medium" }).format(BUILD_TIMESTAMP)}`,
+            `${SettingsPlugin.additionalInfo} - ${Intl.DateTimeFormat("en-GB", { dateStyle: "medium" }).format(BUILD_TIMESTAMP)}`,
         Client: `${RELEASE_CHANNEL} ~ ${client}`,
         Platform: window.navigator.platform
     };
@@ -130,12 +132,18 @@ function generatePluginList() {
 
 const checkForUpdatesOnce = onlyOnce(checkForUpdates);
 
+const settings = definePluginSettings({}).withPrivateSettings<{
+    dismissedDevBuildWarning?: boolean;
+}>();
+
 export default definePlugin({
     name: "SupportHelper",
     required: true,
     description: "Helps us provide support to you",
     authors: [Devs.Ven, Devs.Neon],
     dependencies: ["CommandsAPI", "UserSettingsAPI", "MessageAccessoriesAPI"],
+
+    settings,
 
     patches: [{
         find: ".BEGINNING_DM.format",
@@ -274,17 +282,22 @@ ${enabledPlugins.join(", ")}
                 });
             }
 
-            const repo = await VencordNative.updater.getRepo();
-            if (repo.ok && !repo.value.includes("Vendicated/Vencord")) {
+            if (!IS_STANDALONE && !settings.store.dismissedDevBuildWarning) {
                 return Alerts.show({
                     title: "Hold on!",
                     body: <div>
-                        <Forms.FormText>You are using a fork of Vencord, which we do not provide support for!</Forms.FormText>
+                        <Forms.FormText>You are using a custom build of Vencord, which we do not provide support for!</Forms.FormText>
+
                         <Forms.FormText className={Margins.top8}>
-                            Please either switch to an <Link href="https://vencord.dev/download">officially supported version of Vencord</Link>, or
-                            contact your package maintainer for support instead.
+                            We only provide support for <Link href="https://vencord.dev/download">official builds</Link>.
+                            Either <Link href="https://vencord.dev/download">switch to an official build</Link> or figure your issue out yourself.
                         </Forms.FormText>
-                    </div>
+
+                        <Text variant="text-md/bold" className={Margins.top8}>You will be banned from receiving support if you ignore this rule.</Text>
+                    </div>,
+                    confirmText: "Understood",
+                    secondaryConfirmText: "Don't show again",
+                    onConfirmSecondary: () => settings.store.dismissedDevBuildWarning = true
                 });
             }
         }
