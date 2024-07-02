@@ -4,20 +4,20 @@
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-import { Devs } from "@utils/constants";
-import definePlugin from "@utils/types";
+import { Devs } from '@utils/constants'
+import definePlugin from '@utils/types'
 
 export default definePlugin({
-    name: "ShowAllRoles",
-    description: "Show all roles in new profiles.",
-    authors: [Devs.Luna],
-    patches: [
-        {
-            find: ".Messages.VIEW_ALL_ROLES",
-            replacement: {
-                match: /return null!=\i(?=\?\i\.slice)/,
-                replace: "return false"
-            }
-        }
-    ]
-});
+  name: 'ShowAllRoles',
+  description: 'Show all roles in new profiles.',
+  authors: [Devs.Luna],
+  patches: [
+    {
+      find: '.Messages.VIEW_ALL_ROLES',
+      replacement: {
+        match: /return null!=\i(?=\?\i\.slice)/,
+        replace: 'return false'
+      }
+    }
+  ]
+})
