@@ -16,18 +16,18 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-import { Devs } from "@utils/constants";
-import definePlugin from "@utils/types";
+import { Devs } from '@utils/constants'
+import definePlugin from '@utils/types'
 
 export default definePlugin({
-    name: "MessagePopoverAPI",
-    description: "API to add buttons to message popovers.",
-    authors: [Devs.KingFish, Devs.Ven, Devs.Nuckyz],
-    patches: [{
-        find: "Messages.MESSAGE_UTILITIES_A11Y_LABEL",
-        replacement: {
-            match: /\.jsx\)\((\i\.\i),\{label:\i\.\i\.Messages\.MESSAGE_ACTION_REPLY.{0,200}?"reply-self".{0,50}?\}\):null(?=,.+?message:(\i))/,
-            replace: "$&,Vencord.Api.MessagePopover._buildPopoverElements($1,$2)"
-        }
-    }],
-});
+  name: 'MessagePopoverAPI',
+  description: 'API to add buttons to message popovers.',
+  authors: [Devs.KingFish, Devs.Ven, Devs.Nuckyz],
+  patches: [{
+    find: 'Messages.MESSAGE_UTILITIES_A11Y_LABEL',
+    replacement: {
+      match: /\.jsx\)\((\i\.\i),\{label:\i\.\i\.Messages\.MESSAGE_ACTION_REPLY.{0,200}?"reply-self".{0,50}?\}\):null(?=,.+?message:(\i))/,
+      replace: '$&,Vencord.Api.MessagePopover._buildPopoverElements($1,$2)'
+    }
+  }]
+})
