@@ -10,18 +10,18 @@ import { Devs } from "@utils/constants";
 import definePlugin, { OptionType, PluginSettingDef } from "@utils/types";
 
 const opt = (description: string) => ({
-    type: OptionType.BOOLEAN,
-    description,
-    default: true,
-    restartNeeded: true
+  type: OptionType.BOOLEAN,
+  description,
+  default: true,
+  restartNeeded: true
 } satisfies PluginSettingDef);
 
 const settings = definePluginSettings({
-    showTimeouts: opt("Show member timeout icons in chat."),
-    showInvitesPaused: opt("Show the invites paused tooltip in the server list."),
-    showModView: opt("Show the member mod view context menu item in all servers."),
-    disableDiscoveryFilters: opt("Disable filters in Server Discovery search that hide servers that don't meet discovery criteria."),
-    disableDisallowedDiscoveryFilters: opt("Disable filters in Server Discovery search that hide NSFW & disallowed servers."),
+  showTimeouts: opt("Show member timeout icons in chat."),
+  showInvitesPaused: opt("Show the invites paused tooltip in the server list."),
+  showModView: opt("Show the member mod view context menu item in all servers."),
+  disableDiscoveryFilters: opt("Disable filters in Server Discovery search that hide servers that don't meet discovery criteria."),
+  disableDisallowedDiscoveryFilters: opt("Disable filters in Server Discovery search that hide NSFW & disallowed servers."),
 });
 
 migratePluginSettings("ShowHiddenThings", "ShowTimeouts");
@@ -53,6 +53,15 @@ export default definePlugin({
       replacement: {
         match: /return \i\.\i\(\i\.\i\(\{user:\i,context:\i,checkElevated:!1\}\),\i\.\i\)/,
         replace: "return true",
+      }
+    },
+    // fixes a bug where Members page must be loaded to see highest role, why is Discord depending on MemberSafetyStore.getEnhancedMember for something that can be obtained here?
+    {
+      find: "Messages.GUILD_MEMBER_MOD_VIEW_PERMISSION_GRANTED_BY_ARIA_LABEL,allowOverflow",
+      predicate: () => settings.store.showModView,
+      replacement: {
+        match: /(role:)\i(?=,guildId.{0,100}role:(\i\[))/,
+        replace: "$1$2arguments[0].member.highestRoleId]",
       }
     },
     {
