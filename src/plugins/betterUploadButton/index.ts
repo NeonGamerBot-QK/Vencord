@@ -16,20 +16,20 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-import { Devs } from "@utils/constants";
-import definePlugin from "@utils/types";
+import { Devs } from '@utils/constants'
+import definePlugin from '@utils/types'
 
 export default definePlugin({
-    name: "BetterUploadButton",
-    authors: [Devs.fawn, Devs.Ven],
-    description: "Upload with a single click, open menu with right click",
-    patches: [
-        {
-            find: '"ChannelAttachButton"',
-            replacement: {
-                match: /\.attachButtonInner,"aria-label":.{0,50},onDoubleClick:(.+?:void 0),\.\.\.(\i),/,
-                replace: "$&onClick:$1,onContextMenu:$2.onClick,",
-            },
-        },
-    ],
-});
+  name: 'BetterUploadButton',
+  authors: [Devs.fawn, Devs.Ven],
+  description: 'Upload with a single click, open menu with right click',
+  patches: [
+    {
+      find: '"ChannelAttachButton"',
+      replacement: {
+        match: /\.attachButtonInner,"aria-label":.{0,50},onDoubleClick:(.+?:void 0),\.\.\.(\i),/,
+        replace: '$&onClick:$1,onContextMenu:$2.onClick,'
+      }
+    }
+  ]
+})
